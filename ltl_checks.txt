@@ -1,0 +1,44 @@
+/* LTL checks */
+
+/* SAFETY */
+[] (ns_safety && ne_safety && es_safety && sw_safety && we_safety)
+
+#define ns_safety	!(lights[NS] == green && (lights[SW] == green || lights[WE] == green))
+#define ne_safety	!(lights[NE] == green && lights[ES] == green)
+#define es_safety	!(lights[ES] == green && (lights[SW] == green || lights[NE] == green || lights[WE] == green))
+#define sw_safety	!(lights[SW] == green && (lights[WE] == green || lights[ES] == green || lights[NS] == green))
+#define we_safety	!(lights[WE] == green && (lights[NS] == green || lights[ES] == green || lights[SW] == green))
+
+/* VIVACITY */
+[] (
+    ((senses[NS] && lights[NS] == RED) -> <>(lights[NS] == green)) && 
+    ((senses[NE] && lights[NE] == RED) -> <>(lights[NE] == green)) && 
+    ((senses[ES] && lights[ES] == RED) -> <>(lights[ES] == green)) && 
+    ((senses[SW] && lights[SW] == RED) -> <>(lights[SW] == green)) && 
+    ((senses[WE] && lights[WE] == RED) -> <>(lights[WE] == green))
+)
+
+/* FAIRNESS */
+[]((<>!(nsgreen && nssense)) && (<>!(negreen && nesense)) && (<>!(esgreen && essense)) && (<>!(swgreen && swsense)) && (<>!(wegreen && wesense)))
+
+#define nsgreen (lights[NS] == green)
+#define negreen (lights[NE] == green)
+#define esgreen (lights[ES] == green)
+#define swgreen (lights[SW] == green)
+#define wegreen (lights[WE] == green)
+
+#define nsred (lights[NS] == red)
+#define nered (lights[NE] == red)
+#define esred (lights[ES] == red)
+#define swred (lights[SW] == red)
+#define wered (lights[WE] == red)
+
+#define nssense (senses[NS] == true)
+#define nesense (senses[NE] == true)
+#define essense (senses[ES] == true)
+#define swsense (senses[SW] == true)
+#define wesense (senses[WE] == true)
+
+
+[]((<>!(lights[NS] == green && senses[NS])) && (<>!(lights[NE] == green && senses[NE])) && (<>!(lights[ES] == green && senses[ES])) && (<>!(lights[SW] == green && senses[SW])) && (<>!(lights[WE] == green && senses[WE])))
+[]((<>!(lights[NS] == green && senses[NS])) && (<>!(lights[NE] == green && senses[NE])) && (<>!(lights[ES] == green && senses[ES])) && (<>!(lights[SW] == green && senses[SW])) && (<>!(lights[WE] == green && senses[WE])))
